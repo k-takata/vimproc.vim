@@ -1035,7 +1035,7 @@ function! s:convert_args(args) "{{{
           \ 'copy', 'date', 'del', 'dir', 'echo', 'erase', 'ftype',
           \ 'md', 'mkdir', 'move', 'path', 'rd', 'ren', 'rename',
           \ 'rmdir', 'start', 'time', 'type', 'ver', 'vol']
-    let index = index(internal_commands, a:args[0])
+    let index = index(internal_commands, a:args[0], 0, 1)
     if index >= 0
       " Use cmd.exe
       return ['cmd', '/c', args[0]] + args[1:]
