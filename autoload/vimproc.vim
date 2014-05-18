@@ -101,7 +101,9 @@ endfunction
 " }}}
 
 let g:vimproc#dll_path =
-      \ vimproc#util#substitute_path_separator(g:vimproc#dll_path)
+      \ vimproc#util#iconv(
+      \ vimproc#util#substitute_path_separator(g:vimproc#dll_path),
+      \ &encoding, vimproc#util#termencoding())
 
 " Backward compatibility.
 let g:vimproc_password_pattern = g:vimproc#password_pattern
@@ -1559,8 +1561,7 @@ endfunction
 
 " Initialize.
 if !exists('s:dll_handle')
-  let s:dll_handle = s:vp_dlopen(vimproc#util#iconv(g:vimproc#dll_path,
-      \ &encoding, vimproc#util#systemencoding()))
+  let s:dll_handle = s:vp_dlopen(g:vimproc#dll_path)
   let s:last_status = 0
   let s:last_errmsg = ''
   call s:define_signals()
