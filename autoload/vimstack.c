@@ -24,16 +24,18 @@
 #define VP_INITIAL_BUFSIZE 512
 #define VP_ERRMSG_SIZE 512
 
-#if defined(_WIN64)
-# define VP_RETURN_IF_FAIL(expr) \
-    { const char *vp_err = (expr); if (vp_err != NULL) return vp_err; }
-#else
-# define VP_RETURN_IF_FAIL(expr)     \
+#if !defined(_MSC_VER) || _MSC_VER < 1500
+# define    __pragma(x)
+#endif
+
+#define VP_RETURN_IF_FAIL(expr)     \
+    __pragma(warning(push))         \
+    __pragma(warning(disable:4127)) \
     do {                            \
         const char *vp_err = expr;  \
         if (vp_err) return vp_err;  \
-    } while (0)
-#endif
+    } while (0)                     \
+    __pragma(warning(pop))
 
 /* buf:var|EOV|var|EOV|top:free buffer|buf+size */
 typedef struct vp_stack_t {

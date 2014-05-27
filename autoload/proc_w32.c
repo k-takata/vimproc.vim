@@ -433,7 +433,11 @@ vp_file_write(char *args)
 const char *
 vp_pipe_open(char *args)
 {
-#define VP_GOTO_ERROR(_fmt) do { errfmt = (_fmt); goto error; } while(0)
+#define VP_GOTO_ERROR(_fmt)                         \
+    __pragma(warning(push))                         \
+    __pragma(warning(disable:4127))                 \
+    do { errfmt = (_fmt); goto error; } while(0)    \
+    __pragma(warning(pop))
 #define VP_DUP_HANDLE(hIn, phOut, inherit)                  \
         if (!DuplicateHandle(GetCurrentProcess(), hIn,      \
                     GetCurrentProcess(), phOut,             \
